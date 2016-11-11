@@ -1,15 +1,13 @@
 <?php
 /**
   * wechat php test
+  * update time: 20141008
   */
 
 //define your token
-define("TOKEN", "EGGISGOOD");
+define("TOKEN", "weixin");
 $wechatObj = new wechatCallbackapiTest();
 $wechatObj->valid();
-$wechatObj->responseMsg();
-
-
 
 class wechatCallbackapiTest
 {
@@ -31,9 +29,7 @@ class wechatCallbackapiTest
 
       	//extract post data
 		if (!empty($postStr)){
-                /* libxml_disable_entity_loader is to prevent XML eXternal Entity Injection,
-                   the best way is to check the validity of xml by yourself */
-                libxml_disable_entity_loader(true);
+                
               	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
                 $fromUsername = $postObj->FromUserName;
                 $toUsername = $postObj->ToUserName;
@@ -65,19 +61,12 @@ class wechatCallbackapiTest
 		
 	private function checkSignature()
 	{
-        // you must define TOKEN by yourself
-        if (!defined("TOKEN")) {
-            throw new Exception('TOKEN is not defined!');
-        }
-        
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
-        		
 		$token = TOKEN;
 		$tmpArr = array($token, $timestamp, $nonce);
-        // use SORT_STRING rule
-		sort($tmpArr, SORT_STRING);
+        sort($tmpArr, SORT_STRING);
 		$tmpStr = implode( $tmpArr );
 		$tmpStr = sha1( $tmpStr );
 		
@@ -88,3 +77,5 @@ class wechatCallbackapiTest
 		}
 	}
 }
+
+?>
